@@ -8,7 +8,7 @@ Common S3 methods for objects returned by \code{LCS()}, \code{RHS()}, \code{APCS
 
 coef(object) gives estimated parameter values.
 
-forecast(object) gives mortality forecasts smoothed by selected mortality curve.
+forecast::forecast(object) gives mortality forecasts smoothed by selected mortality curve.
 
 plot(object) plots estimated parameter values, standardised residuals heatmap, data, and mortality forecasts smoothed by selected mortality curve.
 

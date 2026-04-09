@@ -1,5 +1,6 @@
 #' @importFrom minpack.lm nls.lm
-#' @importFrom stats optim nlminb
+#' @importFrom MortalityLaws MortalityLaw
+#' @importFrom stats optim nlminb coef
 #' @importFrom graphics lines legend
 
 fit13 <- function(x,m,w) {
@@ -16,11 +17,14 @@ suppressWarnings(resulta <- nlminb(c(0.001,0.00001,0.1,0.00001,0.0001),f))
 suppressWarnings(resultb <- optim(c(0.001,0.00001,0.1,0.00001,0.0001),f,method="Nelder-Mead"))
 h <- function(p) { sqrt(w)*(log(m)-log((p[1]+p[2]*exp(p[3]*x))/(1+p[4]*exp(p[3]*x))+p[5]*exp(p[3]*x))) }
 suppressWarnings(resultc <- nls.lm(c(0.001,0.00001,0.1,0.00001,0.0001),h,lower=c(-Inf,-Inf,-Inf,-Inf,-Inf),upper=c(Inf,Inf,Inf,Inf,Inf)))
+resultd <- MortalityLaw(x=x,mx=m,law="martinelle")
+error <- f(as.numeric(c(coef(resultd)[3],coef(resultd)[1],coef(resultd)[2],coef(resultd)[4],coef(resultd)[5])))
 oa = ifelse (is.finite(resulta$objective),resulta$objective,Inf)
 ob = ifelse (is.finite(resultb$value),resultb$value,Inf)
 oc = ifelse (is.finite(sum(resultc$fvec^2)),sum(resultc$fvec^2),Inf)
-if (all(!is.finite(c(oa,ob,oc)))) stop("all optimisation attempts are unsuccessful")
-ind = which.min(c(oa,ob,oc))
+od = ifelse (is.finite(error),error,Inf)
+if (all(!is.finite(c(oa,ob,oc,od)))) stop("all optimisation attempts are unsuccessful")
+ind = which.min(c(oa,ob,oc,od))
 if (ind==1) {
 A <- resulta$par[1]
 B <- resulta$par[2]
@@ -39,6 +43,12 @@ B <- resultc$par[2]
 C <- resultc$par[3]
 D <- resultc$par[4]
 E <- resultc$par[5]
+} else if (ind==4) {
+A <- as.numeric(coef(resultd)[3])
+B <- as.numeric(coef(resultd)[1])
+C <- as.numeric(coef(resultd)[2])
+D <- as.numeric(coef(resultd)[4])
+E <- as.numeric(coef(resultd)[5])
 }
 fitted <- (A+B*exp(C*x))/(1+D*exp(C*x))+E*exp(C*x)
 structure(

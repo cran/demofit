@@ -27,7 +27,7 @@
 #' \item Thatcher (1999) (ages 20-100+) - \eqn{m_x = A + \frac{B e^{Cx}}{1+D e^{Cx}}}
 #' }
 #'
-#' The mortality curves are fitted by employing multiple optimisation strategies simultaneously (including PORT routines, Nelder-Mead method, and Levenberg-Marquardt algorithm) and selecting one with smallest weighted least squares on \eqn{ln(m_x)}.
+#' The mortality curves are fitted by employing multiple optimisation strategies simultaneously (including PORT routines, Nelder-Mead method, and Levenberg-Marquardt algorithm) and selecting one with smallest weighted least squares on \eqn{ln(m_x)}. Constrained parameterisations offer traditional interpretability while unconstrained parameterisations provide increased flexibility.
 #'
 #' @return 
 #' An object of class based on selected mortality curve with associated S3 methods coef, fitted, predict, plot, deviance, and residuals.
@@ -39,7 +39,7 @@
 #'
 #' Oppermann, L.H.F. (1870). On the graduation of life tables, with special application to the rate of mortality in infancy and childhood. The Institute of Actuaries.
 #'
-#' Thiele, T.N. (1871). On a mathematical formula to express the rate of mortality throughout the whole of Life, tested by a series of observations made use of by the Danish Life Insurance Company of 1871. Journal of the Institute of Actuaries and Assurance Magazine, 16(5), 313-329.
+#' Thiele, T.N. (1871). On a mathematical formula to express the rate of mortality throughout the whole of life, tested by a series of observations made use of by the Danish Life Insurance Company of 1871. Journal of the Institute of Actuaries and Assurance Magazine, 16(5), 313-329.
 #'
 #' Wittstein, T. and Bumsted, D.A. (1883). The mathematical law of mortality. Journal of the Institute of Actuaries and Assurance Magazine, 24(3), 153-173.
 #'

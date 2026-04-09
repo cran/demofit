@@ -12,10 +12,10 @@ if (any(m<=0)) { stop("m must be positive") }
 if (length(w)!=length(x)) { stop("w must have the same length as x and m") }
 if (any(w<0)) { stop("w must be non-negative") }
 f <- function(p) { sum(w *(log(m)-log(p[1]+p[2]*x+p[3]*x^2+p[4]/(p[5]-x)))^2) }
-suppressWarnings(resulta <- nlminb(c(1,0.1,0.001,1,100),f))
-suppressWarnings(resultb <- optim(c(1,0.1,0.001,1,100),f,method="Nelder-Mead"))
+suppressWarnings(resulta <- nlminb(c(1,0.1,0.001,1,120),f))
+suppressWarnings(resultb <- optim(c(1,0.1,0.001,1,120),f,method="Nelder-Mead"))
 h <- function(p) { sqrt(w)*(log(m)-log(p[1]+p[2]*x+p[3]*x^2+p[4]/(p[5]-x))) }
-suppressWarnings(resultc <- nls.lm(c(1,0.1,0.001,1,100),h,lower=c(-Inf,-Inf,-Inf,-Inf,-Inf),upper=c(Inf,Inf,Inf,Inf,Inf)))
+suppressWarnings(resultc <- nls.lm(c(1,0.1,0.001,1,120),h,lower=c(-Inf,-Inf,-Inf,-Inf,-Inf),upper=c(Inf,Inf,Inf,Inf,Inf)))
 oa = ifelse (is.finite(resulta$objective),resulta$objective,Inf)
 ob = ifelse (is.finite(resultb$value),resultb$value,Inf)
 oc = ifelse (is.finite(sum(resultc$fvec^2)),sum(resultc$fvec^2),Inf)

@@ -13,7 +13,7 @@
 #' 
 #' \eqn{ln(m_{x,t}) = \alpha_x + \beta_x \kappa_t + \epsilon_{x,t}}.
 #'
-#' The model is estimated by singular value decomposition and is forecasted by ARIMA applied to \eqn{\kappa_t}.
+#' The model is estimated by singular value decomposition and is forecasted by ARIMA applied to \eqn{\kappa_t}. Constraints include sum of \eqn{\beta_x} is one and sum of \eqn{\kappa_t} is zero. It can be applied to whole age range.
 #'
 #' @importFrom forecast auto.arima tsclean forecast
 #' @importFrom stats fitted prcomp sd

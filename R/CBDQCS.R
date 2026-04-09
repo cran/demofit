@@ -4,7 +4,7 @@
 #'
 #' @param x vector of ages.
 #' @param M matrix of mortality rates (rows as years and columns as ages).
-#' @param curve name of mortality curve for smoothing forecasted mortality rates (including gompertz, makeham, oppermann, thiele, wittsteinbumsted, perks, weibull, vandermaen, beard, heligmanpollard, rogersplanck, siler, martinelle, thatcher, gompertz2, makeham2, oppermann2, thiele2, wittsteinbumsted2, perks2, weibull2, vandermaen2, beard2, heligmanpollard2, rogersplanck2, siler2, martinelle2, thatcher2, where first 14 curves' parameters are unconstrained and last 14 curves' parameters are generally restricted to be positive).
+#' @param curve name of mortality curve for smoothing forecasted mortality rates (including gompertz, makeham, perks, weibull, beard, martinelle, thatcher, gompertz2, makeham2, perks2, weibull2, beard2, martinelle2, thatcher2, where first 7 curves' parameters are unconstrained and last 7 curves' parameters are generally restricted to be positive).
 #' @param h forecast horizon (default = 10).
 #' @param jumpoff if 1, forecasts are based on estimated parameters only; if 2, forecasts are anchored to observed mortality rates in final year (default = 1). 
 #'
@@ -13,7 +13,7 @@
 #' 
 #' \eqn{ln(m_{x,t}) = \kappa_{1,t} + \kappa_{2,t} (x-\bar{x}) + \kappa_{3,t} ((x-\bar{x})^2-\sigma^2) + \gamma_{t-x} + \epsilon_{x,t}}.
 #'
-#' The model is estimated by Newton updating scheme and is forecasted by ARIMA applied to \eqn{\kappa_{1,t}}, \eqn{\kappa_{2,t}}, \eqn{\kappa_{3,t}}, and \eqn{\gamma_{t-x}} (stationary).
+#' The model is estimated by Newton updating scheme and is forecasted by ARIMA applied to \eqn{\kappa_{1,t}}, \eqn{\kappa_{2,t}}, \eqn{\kappa_{3,t}}, and \eqn{\gamma_c}. Constraints include sum of \eqn{\gamma_c} is zero, sum of \eqn{c\gamma_c} is zero, and sum of \eqn{c^{2}\gamma_c} is zero. It is designed for ages 50-90.
 #'
 #' @importFrom forecast auto.arima tsclean forecast
 #' @importFrom stats fitted lm sd
@@ -39,13 +39,13 @@
 #' residuals(fit)
 #'
 #' @export
-CBDQCS <- function(x,M,curve=c("gompertz","makeham","oppermann","thiele","wittsteinbumsted","perks","weibull","vandermaen","beard","heligmanpollard","rogersplanck","siler","martinelle","thatcher","gompertz2","makeham2","oppermann2","thiele2","wittsteinbumsted2","perks2","weibull2","vandermaen2","beard2","heligmanpollard2","rogersplanck2","siler2","martinelle2","thatcher2"),h=10,jumpoff=1) {
+CBDQCS <- function(x,M,curve=c("gompertz","makeham","perks","weibull","beard","martinelle","thatcher","gompertz2","makeham2","perks2","weibull2","beard2","martinelle2","thatcher2"),h=10,jumpoff=1) {
 if (!is.numeric(x)||!is.numeric(M)) { stop("x and M must be numeric") }
 if (!is.vector(x)) { stop("x must be a vector") }
 if (!is.matrix(M)) stop("M must be a matrix with its rows as years and columns as ages")
 if (length(x)!=ncol(M)) stop("the number of ages must match the number of columns of M")
 if (is.unsorted(x,strictly=TRUE)) { stop("x must be in ascending order") }
-if (any(x<0)) { stop("x must be non-negative") }
+if ((min(x)<50)||(max(x)>90)) { stop("x must be in between 50 and 90") }
 if (any(M<=0)) { stop("all M values must be positive") }
 if (nrow(M)<20) stop("it requires at least 20 years of data for this forecast")
 if (!is.numeric(h)||!is.numeric(jumpoff)) { stop("h and jumpoff must be numeric") }

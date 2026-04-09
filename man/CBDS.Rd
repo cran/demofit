@@ -7,11 +7,8 @@
 CBDS(
   x,
   M,
-  curve = c("gompertz", "makeham", "oppermann", "thiele", "wittsteinbumsted", "perks",
-    "weibull", "vandermaen", "beard", "heligmanpollard", "rogersplanck", "siler",
-    "martinelle", "thatcher", "gompertz2", "makeham2", "oppermann2", "thiele2",
-    "wittsteinbumsted2", "perks2", "weibull2", "vandermaen2", "beard2",
-    "heligmanpollard2", "rogersplanck2", "siler2", "martinelle2", "thatcher2"),
+  curve = c("gompertz", "makeham", "perks", "weibull", "beard", "martinelle", "thatcher",
+    "gompertz2", "makeham2", "perks2", "weibull2", "beard2", "martinelle2", "thatcher2"),
   h = 10,
   jumpoff = 1
 )
@@ -21,7 +18,7 @@ CBDS(
 
 \item{M}{matrix of mortality rates (rows as years and columns as ages).}
 
-\item{curve}{name of mortality curve for smoothing forecasted mortality rates (including gompertz, makeham, oppermann, thiele, wittsteinbumsted, perks, weibull, vandermaen, beard, heligmanpollard, rogersplanck, siler, martinelle, thatcher, gompertz2, makeham2, oppermann2, thiele2, wittsteinbumsted2, perks2, weibull2, vandermaen2, beard2, heligmanpollard2, rogersplanck2, siler2, martinelle2, thatcher2, where first 14 curves' parameters are unconstrained and last 14 curves' parameters are generally restricted to be positive).}
+\item{curve}{name of mortality curve for smoothing forecasted mortality rates (including gompertz, makeham, perks, weibull, beard, martinelle, thatcher, gompertz2, makeham2, perks2, weibull2, beard2, martinelle2, thatcher2, where first 7 curves' parameters are unconstrained and last 7 curves' parameters are generally restricted to be positive).}
 
 \item{h}{forecast horizon (default = 10).}
 
@@ -38,7 +35,7 @@ The CBD (M5) model is specified as
 
 \eqn{ln(m_{x,t}) = \kappa_{1,t} + \kappa_{2,t} (x-\bar{x}) + \epsilon_{x,t}}.
 
-The model is estimated by regression and is forecasted by ARIMA applied to \eqn{\kappa_{1,t}} and \eqn{\kappa_{2,t}}.
+The model is estimated by regression and is forecasted by ARIMA applied to \eqn{\kappa_{1,t}} and \eqn{\kappa_{2,t}}. It is designed for ages 50-90.
 }
 \examples{
 x <- 60:89

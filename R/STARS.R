@@ -14,7 +14,7 @@
 #'
 #' where \eqn{\mu} contains intercept parameters and \eqn{R} is banded matrix with non-zero entries in main diagonal and two subdiagonals below that.
 #'
-#' The model is estimated by constrained regression and is forecasted via its autoregressive nature.
+#' The model is estimated by constrained regression and is forecasted via its autoregressive nature. Constraints in \eqn{R} include: all non-zero entries are between zero and one and sum of each row is one. It can be applied to whole age range.
 #'
 #' @importFrom forecast auto.arima tsclean forecast
 #' @importFrom NlcOptim solnl

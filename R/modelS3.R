@@ -5,7 +5,7 @@
 #'
 #' coef(object) gives estimated parameter values.
 #'
-#' forecast(object) gives mortality forecasts smoothed by selected mortality curve.
+#' forecast::forecast(object) gives mortality forecasts smoothed by selected mortality curve.
 #'
 #' plot(object) plots estimated parameter values, standardised residuals heatmap, data, and mortality forecasts smoothed by selected mortality curve.
 #'
@@ -28,6 +28,7 @@
 #' @method forecast CBDCS
 #' @method forecast CBDQCS
 #' @method forecast STARS
+#' @method forecast ENS
 #'
 #' @method plot LCS
 #' @method plot RHS
@@ -36,6 +37,7 @@
 #' @method plot CBDCS
 #' @method plot CBDQCS
 #' @method plot STARS
+#' @method plot ENS
 #'
 #' @method residuals LCS
 #' @method residuals RHS

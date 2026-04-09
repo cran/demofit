@@ -7,11 +7,8 @@
 CBDQCS(
   x,
   M,
-  curve = c("gompertz", "makeham", "oppermann", "thiele", "wittsteinbumsted", "perks",
-    "weibull", "vandermaen", "beard", "heligmanpollard", "rogersplanck", "siler",
-    "martinelle", "thatcher", "gompertz2", "makeham2", "oppermann2", "thiele2",
-    "wittsteinbumsted2", "perks2", "weibull2", "vandermaen2", "beard2",
-    "heligmanpollard2", "rogersplanck2", "siler2", "martinelle2", "thatcher2"),
+  curve = c("gompertz", "makeham", "perks", "weibull", "beard", "martinelle", "thatcher",
+    "gompertz2", "makeham2", "perks2", "weibull2", "beard2", "martinelle2", "thatcher2"),
   h = 10,
   jumpoff = 1
 )
@@ -21,7 +18,7 @@ CBDQCS(
 
 \item{M}{matrix of mortality rates (rows as years and columns as ages).}
 
-\item{curve}{name of mortality curve for smoothing forecasted mortality rates (including gompertz, makeham, oppermann, thiele, wittsteinbumsted, perks, weibull, vandermaen, beard, heligmanpollard, rogersplanck, siler, martinelle, thatcher, gompertz2, makeham2, oppermann2, thiele2, wittsteinbumsted2, perks2, weibull2, vandermaen2, beard2, heligmanpollard2, rogersplanck2, siler2, martinelle2, thatcher2, where first 14 curves' parameters are unconstrained and last 14 curves' parameters are generally restricted to be positive).}
+\item{curve}{name of mortality curve for smoothing forecasted mortality rates (including gompertz, makeham, perks, weibull, beard, martinelle, thatcher, gompertz2, makeham2, perks2, weibull2, beard2, martinelle2, thatcher2, where first 7 curves' parameters are unconstrained and last 7 curves' parameters are generally restricted to be positive).}
 
 \item{h}{forecast horizon (default = 10).}
 
@@ -38,7 +35,7 @@ The CBD with curvature and cohort (M7) model is specified as
 
 \eqn{ln(m_{x,t}) = \kappa_{1,t} + \kappa_{2,t} (x-\bar{x}) + \kappa_{3,t} ((x-\bar{x})^2-\sigma^2) + \gamma_{t-x} + \epsilon_{x,t}}.
 
-The model is estimated by Newton updating scheme and is forecasted by ARIMA applied to \eqn{\kappa_{1,t}}, \eqn{\kappa_{2,t}}, \eqn{\kappa_{3,t}}, and \eqn{\gamma_{t-x}} (stationary).
+The model is estimated by Newton updating scheme and is forecasted by ARIMA applied to \eqn{\kappa_{1,t}}, \eqn{\kappa_{2,t}}, \eqn{\kappa_{3,t}}, and \eqn{\gamma_c}. Constraints include sum of \eqn{\gamma_c} is zero, sum of \eqn{c\gamma_c} is zero, and sum of \eqn{c^{2}\gamma_c} is zero. It is designed for ages 50-90.
 }
 \examples{
 x <- 60:89

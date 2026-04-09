@@ -38,7 +38,7 @@ The Renshaw-Haberman (RH) model is specified as
 
 \eqn{ln(m_{x,t}) = \alpha_x + \beta_x \kappa_t + \gamma_{t-x} + \epsilon_{x,t}}.
 
-The model is estimated by Newton updating scheme and is forecasted by ARIMA applied to \eqn{\kappa_t} and \eqn{\gamma_{t-x}} (stationary).
+The model is estimated by Newton updating scheme and is forecasted by ARIMA applied to \eqn{\kappa_t} and \eqn{\gamma_c}. Constraints include sum of \eqn{\beta_x} is one, sum of \eqn{\kappa_t} is zero, and sum of \eqn{\gamma_c} is zero. It can be applied to whole age range.
 }
 \examples{
 x <- 60:89
