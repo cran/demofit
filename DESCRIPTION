@@ -1,7 +1,7 @@
 Package: demofit
 Title: Parametric Mortality Curve Fitting and Mortality Forecasting
         Tools
-Version: 0.1.4
+Version: 0.1.5
 Authors@R: person("Jackie", "Li", , "jackieli@smu.edu.sg", role = c("aut", "cre", "cph"))
 Author: Jackie Li [aut, cre, cph]
 Maintainer: Jackie Li <jackieli@smu.edu.sg>
@@ -20,6 +20,6 @@ Imports: forecast, minpack.lm, MortalityLaws, NlcOptim, stats, MASS,
 Suggests: knitr, rmarkdown
 VignetteBuilder: knitr
 NeedsCompilation: no
-Packaged: 2026-06-11 19:40:34 UTC; likak
+Packaged: 2026-08-13 13:05:12 UTC; likak
 Repository: CRAN
-Date/Publication: 2026-06-11 20:50:09 UTC
+Date/Publication: 2026-08-19 22:20:23 UTC

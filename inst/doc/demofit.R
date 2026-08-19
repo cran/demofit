@@ -2,12 +2,46 @@
 library(demofit)
 
 ## -----------------------------------------------------------------------------
+# generate synthetic mortality rates in data frame
+a <- c(-4.8499,-4.7676,-4.6719,-4.5722,-4.4847,-4.3841,-4.2813,-4.1863,-4.0861,-3.9962,
+-3.8885,-3.7896,-3.6853,-3.5737,-3.4728,-3.3718,-3.2586,-3.1474,-3.0371,-2.9206,
+-2.7998,-2.6845,-2.5653,-2.4581,-2.3367,-2.2159,-2.1017,-1.9941,-1.8821, -1.7697)
+b <- c(0.0283,0.0321,0.0335,0.0336,0.0341,0.0358,0.0368,0.0403,0.0392,0.0395,
+0.0396,0.0399,0.0397,0.0386,0.039,0.0375,0.0367,0.0368,0.035,0.0354,
+0.0336,0.0323,0.0313,0.0295,0.0282,0.0265,0.024,0.0226,0.0219,0.0183)
+k <- c(12.11,10.69,11.18,9.64,9.35,8.21,6.89,5.74,4.56,3.6,
+3.27,2.04,1.11,-0.44,-1.05,-1.03,-1.84,-2.9,-4.03,-4.12,
+-5.18,-5.64,-6,-6.51,-6.91,-6.9,-8.32,-8.53,-9.69,-9.31)
+set.seed(123)
+Raw <- exp(outer(k,b)+matrix(a,nrow=30,ncol=30,byrow=TRUE)+rnorm(900,0,0.035))
+Data <- as.data.frame(Raw)
+# convert data frame into numeric matrix
+M <- mortalitymatrix(Data)
+
+## -----------------------------------------------------------------------------
+# generate synthetic mortality rates in vector form
 x <- 60:89
 set.seed(123); m <- 0.0000082*exp(0.10771*c(60:89)+rnorm(30,0,0.1))
+# fit Gompertz curve to mortality rates
 fit <- MC(x=x,m=m,curve="gompertz")
+# print estimated parameters
+coef(fit)
+# plot fitted Gompertz curve
 plot(fit)
 
 ## -----------------------------------------------------------------------------
+# generate synthetic mortality rates in vector form
+x <- 60:89
+set.seed(123); m <- 0.005+0.0000082*exp(0.10771*c(60:89)+rnorm(30,0,0.1))
+# fit Makeham curve to mortality rates
+fit <- MC(x=x,m=m,curve="makeham")
+# print estimated parameters
+coef(fit)
+# plot fitted Makeham curve
+plot(fit)
+
+## -----------------------------------------------------------------------------
+# generate synthetic mortality rates in matrix form
 x <- 60:89
 a <- c(-4.8499,-4.7676,-4.6719,-4.5722,-4.4847,-4.3841,-4.2813,-4.1863,-4.0861,-3.9962,
 -3.8885,-3.7896,-3.6853,-3.5737,-3.4728,-3.3718,-3.2586,-3.1474,-3.0371,-2.9206,
@@ -20,10 +54,49 @@ k <- c(12.11,10.69,11.18,9.64,9.35,8.21,6.89,5.74,4.56,3.6,
 -5.18,-5.64,-6,-6.51,-6.91,-6.9,-8.32,-8.53,-9.69,-9.31)
 set.seed(123)
 M <- exp(outer(k,b)+matrix(a,nrow=30,ncol=30,byrow=TRUE)+rnorm(900,0,0.035))
+# fit Lee-Carter model to mortality rates and smooth forecasted rates by Makeham curve
 fit <- FCS(x=x,M=M,model="LC",curve="makeham",h=30,jumpoff=2)
+# print estimated parameters
+coef(fit)
+# plot fitting and forecasting results
 plot(fit)
 
 ## -----------------------------------------------------------------------------
+# generate synthetic mortality rates in matrix form
+x <- 60:89
+k1 <- -2.97-0.0245*(0:29)
+k2 <- 0.101+0.000345*(0:29)
+set.seed(123)
+M <- exp(matrix(k1,nrow=30,ncol=30,byrow=FALSE)+outer(k2,(x-mean(x)))+rnorm(900,0,0.035))
+# fit CBD model to mortality rates and smooth forecasted rates by Makeham curve
+fit <- CBDS(x=x,M=M,curve="makeham",h=30,jumpoff=2)
+# print estimated parameters
+coef(fit)
+# plot fitting and forecasting results
+plot(fit)
+
+## -----------------------------------------------------------------------------
+# generate synthetic mortality rates in matrix form
+x <- 60:69
+a <- c(-4.8499,-4.7676,-4.6719,-4.5722,-4.4847,-4.3841,-4.2813,-4.1863,-4.0861,-3.9962)
+b <- c(0.0801,0.0909,0.0948,0.0951,0.0965,0.1014,0.1042,0.1141,0.1110,0.1118)
+k <- c(12.11,10.69,11.18,9.64,9.35,8.21,6.89,5.74,4.56,3.60,
+3.27,2.04,1.11,-0.44,-1.05,-1.03,-1.84,-2.90,-4.03,-4.12,
+-5.18,-5.64,-6.00,-6.51,-6.91,-6.90,-8.32,-8.53,-9.69,-9.31)
+set.seed(123)
+M <- exp(outer(k,b)+matrix(a,nrow=30,ncol=10,byrow=TRUE)+rnorm(300,0,0.035))
+# fit Lee-Carter, Renshaw-Haberman, age-period-cohort, and CBD models to mortality rates
+fit1 <- LCS(x=x,M=M,curve="makeham",h=30,jumpoff=2)
+fit2 <- RHS(x=x,M=M,curve="makeham",h=30,jumpoff=2)
+fit3 <- APCS(x=x,M=M,curve="makeham",h=30,jumpoff=2)
+fit4 <- CBDS(x=x,M=M,curve="makeham",h=30,jumpoff=2)
+# generate ensemble interval forecast of mortality rates
+fit <- ENI(fit1,fit2,fit3,fit4)
+# plot ensemble results
+plot(fit)
+
+## -----------------------------------------------------------------------------
+# generate synthetic mortality rates of two populations in matrix form
 x <- 60:89
 a1 <- c(-5.18,-5.12,-4.98,-4.92,-4.82,-4.73,-4.66,-4.53,-4.45,-4.35,
 -4.26,-4.17,-4.05,-3.95,-3.84,-3.73,-3.65,-3.52,-3.40,-3.29,
@@ -52,22 +125,10 @@ k2 <- c(2.35,0.62,-0.38,0.12,0.00,0.80,-1.39,0.38,2.47,0.40,
 set.seed(123)
 M1 <- exp(outer(k1,b1)+outer(K,B)+matrix(a1,nrow=30,ncol=30,byrow=TRUE)+rnorm(900,0,0.07))
 M2 <- exp(outer(k2,b2)+outer(K,B)+matrix(a2,nrow=30,ncol=30,byrow=TRUE)+rnorm(900,0,0.07))
+# fit common factor model to mortality rates and smooth forecasted rates by Makeham curve
 fit <- CFMS(x=x,M1=M1,M2=M2,curve="makeham",h=30,jumpoff=2)
-plot(fit)
-
-## -----------------------------------------------------------------------------
-x <- 60:69
-a <- c(-4.8499,-4.7676,-4.6719,-4.5722,-4.4847,-4.3841,-4.2813,-4.1863,-4.0861,-3.9962)
-b <- c(0.0801,0.0909,0.0948,0.0951,0.0965,0.1014,0.1042,0.1141,0.1110,0.1118)
-k <- c(12.11,10.69,11.18,9.64,9.35,8.21,6.89,5.74,4.56,3.60,
-3.27,2.04,1.11,-0.44,-1.05,-1.03,-1.84,-2.90,-4.03,-4.12,
--5.18,-5.64,-6.00,-6.51,-6.91,-6.90,-8.32,-8.53,-9.69,-9.31)
-set.seed(123)
-M <- exp(outer(k,b)+matrix(a,nrow=30,ncol=10,byrow=TRUE)+rnorm(300,0,0.035))
-fit1 <- LCS(x=x,M=M,curve="makeham",h=30,jumpoff=2)
-fit2 <- RHS(x=x,M=M,curve="makeham",h=30,jumpoff=2)
-fit3 <- APCS(x=x,M=M,curve="makeham",h=30,jumpoff=2)
-fit4 <- CBDS(x=x,M=M,curve="makeham",h=30,jumpoff=2)
-fit <- ENI(fit1,fit2,fit3,fit4)
-plot(fit)
+# print estimated parameters
+coef(fit)
+# plot fitting (residuals) and forecasting results
+plot(fit,which=2)
 
